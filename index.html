@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Перенесення вогню</title>
+    <title>Артилерійські калькулятори</title>
     <style>
         :root {
             /* Палітра Military Liquid */
@@ -30,6 +30,7 @@
             background-color: var(--bg-deep);
             color: var(--text-primary);
             min-height: 100vh;
+            padding-bottom: 100px;
             
             background-image: 
                 radial-gradient(at 0% 0%, rgba(20, 50, 20, 0.6) 0, transparent 50%), 
@@ -39,28 +40,25 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        h2 {
+        h1 {
             text-align: center;
             font-weight: 800;
             font-size: 22px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 5px;
+            margin-bottom: 20px;
             color: var(--text-primary);
             text-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+            border-bottom: 2px solid var(--neon-green);
+            display: inline-block;
+            padding-bottom: 5px;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-        .subtitle {
-            text-align: center;
-            font-size: 11px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 25px;
-            opacity: 0.8;
-        }
-
-        .glass-card {
+        /* --- STYLING DETAILS AS GLASS CARD --- */
+        details {
             background: var(--glass-panel);
             backdrop-filter: blur(25px) saturate(120%);
             -webkit-backdrop-filter: blur(25px) saturate(120%);
@@ -70,12 +68,14 @@
             box-shadow: 
                 0 20px 40px -10px rgba(0, 0, 0, 0.6),
                 inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-            padding: 24px 20px;
-            position: relative;
+            margin-bottom: 20px;
             overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
         }
 
-        .glass-card::before {
+        /* Декоративна лінія зверху (як у твоєму прикладі) */
+        details::before {
             content: '';
             position: absolute;
             top: 0; left: 50%; transform: translateX(-50%);
@@ -84,6 +84,45 @@
             border-radius: 0 0 4px 4px;
             box-shadow: 0 0 10px var(--neon-green);
             opacity: 0.7;
+            z-index: 2;
+        }
+
+        /* Стиль заголовка спойлера */
+        summary {
+            padding: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--neon-green);
+            outline: none;
+        }
+
+        summary::-webkit-details-marker { display: none; }
+        
+        summary::after {
+            content: '+'; 
+            font-size: 20px; 
+            font-weight: bold;
+            color: var(--text-secondary);
+        }
+        
+        details[open] summary {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+        }
+        
+        details[open] summary::after { 
+            content: '-'; 
+            color: var(--neon-green);
+        }
+
+        .content-pad {
+            padding: 24px 20px;
         }
 
         h3 {
@@ -105,12 +144,15 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
+        /* Перший h3 в блоці без відступу зверху */
+        .content-pad > h3:first-child { margin-top: 0; }
+
         .row { display: flex; gap: 12px; margin-bottom: 12px; }
         .col { flex: 1; }
 
         label {
             display: block;
-            font-size: 11px;
+            font-size: 15px;
             color: var(--text-secondary);
             margin-bottom: 6px;
             font-weight: 500;
@@ -123,13 +165,11 @@
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 14px;
-            
             color: var(--text-primary);
             font-family: var(--font-mono);
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 600;
             text-align: center;
-            
             box-sizing: border-box;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
@@ -145,9 +185,8 @@
             transform: scale(1.01);
         }
 
-        /* --- ЗМІНЕНО ТУТ --- */
         input::placeholder {
-            color: rgba(255, 255, 255, 0.5); /* Було 0.15, стало 0.5 (світліше) */
+            color: rgba(255, 255, 255, 0.5);
             font-weight: 400;
         }
 
@@ -157,18 +196,29 @@
             margin-top: 25px;
             border: none;
             border-radius: 16px;
-            background: linear-gradient(135deg, #ff453a 0%, #c41c00 100%);
+            background: linear-gradient(135deg, #1b5e20 0%, #004d40 100%);
             color: white;
             font-family: var(--font-stack);
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(255, 59, 48, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             transition: transform 0.1s, filter 0.2s;
             position: relative;
             overflow: hidden;
+        }
+
+        button.btn-red {
+            background: linear-gradient(135deg, #ff453a 0%, #c41c00 100%);
+            box-shadow: 0 8px 20px rgba(255, 59, 48, 0.3);
+        }
+        
+        button.btn-amber {
+            background: linear-gradient(135deg, #ffca28 0%, #ff8f00 100%);
+            color: #000;
+            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.3);
         }
 
         button::after {
@@ -191,12 +241,9 @@
             border-radius: 16px;
             padding: 20px;
             position: relative;
-        }
-
-        .result-text {
             font-family: var(--font-mono);
             color: var(--neon-green);
-            font-size: 15px;
+            font-size: 14px;
             line-height: 1.6;
             white-space: pre-wrap;
             text-shadow: 0 0 8px rgba(57, 255, 20, 0.3);
@@ -216,168 +263,512 @@
             100% { transform: translateY(100%); }
         }
 
-        .input-warning input {
-            color: var(--neon-amber);
-            border-color: rgba(255, 170, 0, 0.3);
+        /* Canvas Styles */
+        canvas { 
+            background: #fff; 
+            border-radius: 12px; 
+            width: 100%; 
+            max-width: 320px; 
+            display: block; 
+            margin: 15px auto; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
-        .input-warning input:focus {
-            border-color: var(--neon-amber);
-            box-shadow: 0 0 0 3px rgba(255, 170, 0, 0.15);
+
+        /* Table Styles */
+        .log-container { 
+            overflow-x: auto; 
+            margin-top: 20px; 
+            border-radius: 12px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            background: rgba(0,0,0,0.2);
         }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        th, td { padding: 10px 5px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+        th { background: rgba(255,255,255,0.05); color: var(--neon-amber); font-weight: 600; }
+        td { color: #fff; font-family: var(--font-mono); }
+/* --- TEXT DANGER BLINK ANIMATION --- */
+@keyframes textDangerPulse {
+    0%, 100% {
+        color: rgba(255, 59, 48, 0.6);
+        text-shadow: 0 0 3px rgba(255, 59, 48, 0.2);
+        opacity: 0.8;
+    }
+    50% {
+        color: #ff3b30; /* Насичений червоний */
+        text-shadow: 
+            0 0 8px rgba(255, 59, 48, 0.8), 
+            0 0 15px rgba(255, 59, 48, 0.5);
+        opacity: 1;
+    }
+}
+
+.text-danger-blink {
+    animation: textDangerPulse 1.2s infinite ease-in-out !important;
+    font-weight: 700;
+}
+        
+
     </style>
 </head>
 <body>
 
-    <h2>Transfer Fire</h2>
-    <div class="subtitle">Перенесення вогню</div>
+    <h1> Артилерійські калькулятори </h1>
 
-    <div class="glass-card">
-        
-        <h3><span style="opacity:0.7">01</span> // Крайні Установки</h3>
-        <div class="row">
-            <div class="col">
-                <label>Приціл 1-ї</label>
-                <input type="number" id="p1_old" placeholder="548">
+    <details>
+        <summary>1. Уступ /Інтервал||Δ Приціл/Кутомір</summary>
+        <div class="content-pad">
+            <h3>Г-1 (ПАНОРАМА)</h3>
+            <div class="row">
+                <div class="col">
+                    <label>ОН</label>
+                    <input type="text" id="inON" placeholder="60,00">
+                </div>
+                <div class="col">
+                    <label>Кутомір на ОГ</label>
+                    <input type="text" id="inK" placeholder="24,15">
+                </div>
             </div>
-            <div class="col">
-                <label>Доворот 1-ї</label>
-                <input type="text" id="d1_old" placeholder="24-57">
+            <canvas id="canvDial"></canvas>
+
+            <h3>МАПА ТА РОЗРАХУНОК</h3>
+            <div class="row">
+                <div class="col"><label>Відстань (м)</label><input type="number" id="inD" placeholder="137"></div>
+                <div class="col"><label>Дельта X</label><input type="number" id="inDX" placeholder="0.5" step="0.01"></div>
             </div>
+            <div class="row">
+                <div class="col"><label>D топ (м)</label><input type="number" id="inDtop" placeholder="2000"></div>
+            </div>
+            <button onclick="calcMap()">РОЗРАХУВАТИ ГРАФІКУ</button>
+            <canvas id="canvMap"></canvas>
+            <div id="resultMap" class="result-box">Результати...</div>
         </div>
-        <div class="row">
-            <div class="col">
-                <label>Приціл 2-ї (Осн)</label>
-                <input type="number" id="p2_old" placeholder="511">
+    </details>
+
+    <details>
+        <summary>2. КОРИГУВАННЯ ТА ПЕРЕНЕСЕННЯ ВОГНЮ</summary>
+        <div class="content-pad">
+            <h3>Перші Установки</h3>
+            <div class="row">
+                <div class="col"><label>Пр (осн)</label><input type="text" id="p_base_corr" placeholder="511"></div>
+                <div class="col"><label>ОН</label><input type="text" id="on_base_corr" placeholder="26,00"></div>
+                <div class="col"><label>Дов №2</label><input type="text" id="dov_base_corr" placeholder="2,85"></div>
             </div>
-            <div class="col">
-                <label>Доворот 2-ї (Осн)</label>
-                <input type="text" id="d2_old" placeholder="24-84">
+            <div class="row">
+                <div class="col"><label>Кутомір</label><input type="text" id="kt_1_2_corr" placeholder="41,87"></div>
+                <div class="col"><label>d (м)</label><input type="text" id="d_dist_corr" placeholder="106"></div>
             </div>
-        </div>
-
-        <h3><span style="opacity:0.7">02</span> // Топографія</h3>
-        <div class="row">
-            <div class="col">
-                <label>D топ (Стара)</label>
-                <input type="number" id="dt_old" placeholder="1725">
+            <div class="row">
+                <div class="col"><label>ΔX</label><input type="text" id="dx_corr" placeholder="5,6"></div>
+                <div class="col"><label>D топ</label><input type="text" id="d_top_corr" placeholder="1725"></div>
             </div>
-            <div class="col">
-                <label>D топ (Нова)</label>
-                <input type="number" id="dt_new" placeholder="1515">
+            <button onclick="calculateInitialCorr()">Розрахувати</button>
+
+            <h3>Коректура </h3>
+            <div class="row">
+                <div class="col"><label>Переліт</label><input type="text" id="c_perelit" placeholder="Метри"></div>
+                <div class="col"><label>Недоліт</label><input type="text" id="c_nedolit" placeholder="Метри"></div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label>α (Стара)</label>
-                <input type="text" id="a_old" placeholder="26-00">
+            <div class="row">
+                <div class="col"><label>Вліво</label><input type="text" id="c_zliva" placeholder="Метри"></div>
+                <div class="col"><label>Вправо</label><input type="text" id="c_sprava" placeholder="Метри"></div>
             </div>
-            <div class="col">
-                <label>α (Нова)</label>
-                <input type="text" id="a_new" placeholder="22-37">
-            </div>
-        </div>
-
-        <h3><span style="opacity:0.7">03</span> // Коефіцієнт</h3>
-        <div class="input-warning">
-            <label style="color: var(--neon-amber);">ΔX (на 1 поділку Пр)</label>
-            <input type="number" id="dx" value="5.6" step="0.1">
-        </div>
-
-        <button onclick="calculateManualTransfer()">Розрахувати</button>
-
-        <div class="result-box">
-            <div id="resTransfer" class="result-text">ОЧІКУВАННЯ ДАНИХ...</div>
-        </div>
-    </div>
-
-    <script>
-        function parseArt(val) {
-            if (!val) return 0;
-            let c = val.toString().replace(/[,–—−-]/g, '.');
-            return parseFloat(c);
-        }
-
-        function convertToMils(val) {
-            let sign = val < 0 ? -1 : 1;
-            let abs = Math.abs(val);
-            let big = Math.floor(abs);
-            let small = Math.round((abs - big) * 100);
-            return sign * (big * 100 + small);
-        }
-
-        function milsToArt(mils) {
-            let sign = mils < 0 ? "-" : "";
-            let abs = Math.abs(mils);
-            let big = Math.floor(abs / 100);
-            let small = Math.round(abs % 100);
-            if (small >= 100) { big++; small -= 100; }
-            return sign + (big < 10 ? "0" + big : big) + "-" + (small < 10 ? "0" + small : small);
-        }
-        
-        function calcAngleDiff(a1, a2) {
-            let v1 = convertToMils(a1);
-            let v2 = convertToMils(a2);
-            return v1 - v2; 
-        }
-
-        function addAngles(baseArt, deltaMils) {
-            let baseMils = convertToMils(baseArt);
-            let resMils = baseMils + deltaMils;
-            while (resMils >= 6000) resMils -= 6000;
-            while (resMils < 0) resMils += 6000;
-            return milsToArt(resMils);
-        }
-
-        function formatDeltaArt(mils) {
-            let sign = mils >= 0 ? "+" : "-";
-            let abs = Math.abs(mils);
-            let big = Math.floor(abs / 100);
-            let small = Math.round(abs % 100);
-            return sign + (big < 10 ? "0" + big : big) + "-" + (small < 10 ? "0" + small : small);
-        }
-
-        function calculateManualTransfer() {
-            let p1_old = parseFloat(document.getElementById('p1_old').value) || 0;
-            let d1_old = parseArt(document.getElementById('d1_old').value);
-            let p2_old = parseFloat(document.getElementById('p2_old').value) || 0;
-            let d2_old = parseArt(document.getElementById('d2_old').value);
-
-            let dt_old = parseFloat(document.getElementById('dt_old').value) || 0;
-            let dt_new = parseFloat(document.getElementById('dt_new').value) || 0;
-            let a_old = parseArt(document.getElementById('a_old').value);
-            let a_new = parseArt(document.getElementById('a_new').value);
+            <button onclick="applyCorrection()" class="btn-red">ПОСТРІЛ</button>
             
-            let dx = parseFloat(document.getElementById('dx').value);
+            <div class="log-container">
+                <table id="fireLog">
+                    <thead>
+                        <tr>
+                            <th>№</th><th>М1 Пр</th><th>М1 Дов</th><th>М2 Пр</th><th>М2 Дов</th><th>БК</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logBody"></tbody>
+                </table>
+            </div>
 
-            if (!dx || dx === 0) {
-                document.getElementById('resTransfer').innerHTML = "<span style='color:#ff3b30'>ПОМИЛКА: Введіть ΔX</span>";
-                return;
+            <h3>Перенос</h3>
+            <div class="row">
+                <div class="col"><label>D топ НОВА</label><input type="text" id="trans_d_new" placeholder="1515"></div>
+                <div class="col"><label>α дир НОВА</label><input type="text" id="trans_a_new" placeholder="24,50"></div>
+            </div>
+            <button onclick="calculateTransferCorr()" class="btn-amber">Обчислити Перенос</button>
+        </div>
+    </details>
+
+    <details>
+        <summary>3. ЗАДАЧА ПО БР</summary>
+        <div class="content-pad">
+            <h3>1. ПГЗ: Основна (ОГ)</h3>
+            <div class="row">
+                <div class="col"><label>E кт (X)</label><input type="text" id="e_kt" placeholder="82346"></div>
+                <div class="col"><label>N кт (Y)</label><input type="text" id="n_kt" placeholder="43765"></div>
+                <div class="col"><label>h кт (Z)</label><input type="text" id="h_kt" placeholder="322"></div>
+            </div>
+            <div class="row">
+                <div class="col"><label>ОН бат</label><input type="text" id="on_val_coord" placeholder="25,00"></div>
+                <div class="col"><label>Кут на КТ</label><input type="text" id="d_kt" placeholder="на КТ"></div>
+            </div>
+            <div class="row">
+                <div class="col"><label>D</label><input type="text" id="d_pgz" placeholder="Метри"></div>
+                <div class="col"><label>Мц<span class='text-danger-blink'>змінюємо знак</span> </label><input type="text" id="mc_val" placeholder="0,13"></div>
+            </div>
+            <button onclick="calculatePGZ()">Розрахувати ОГ</button>
+            <div id="resPGZ" class="result-box">...</div>
+
+            <h3>2. Прив'язка 1-ї</h3>
+            <label>Кутомір з ОГ на 1-шу (d 0-1):</label>
+            <input type="text" id="d_0_1_coord" placeholder="31-20" style="margin-bottom:10px;">
+            <div class="row">
+                <div class="col"><label>β (рейка)</label><input type="text" id="beta_1st" placeholder="0-12"></div>
+                <div class="col"><label>ε (місце)</label><input type="text" id="eps_1st" placeholder="0,02"></div>
+            </div>
+            <button onclick="calculate1st()">Розрахувати 1-шу</button>
+            <div id="res1st" class="result-box">...</div>
+
+            <h3>3. Глибина укриття</h3>
+            <div class="row">
+                <div class="col"><label>Дт (ціль)</label><input type="text" id="dt_ukr" placeholder="Метри"></div>
+                <div class="col"><label>d (гребінь)</label><input type="text" id="d_ukr" placeholder="Метри"></div>
+            </div>
+            <div class="row">
+                <div class="col"><label>h сп</label><input type="text" id="h_sp" placeholder="h"></div>
+                <div class="col"><label>h гр</label><input type="text" id="h_gr_ukr" placeholder="h"></div>
+                <div class="col"><label>h вп</label><input type="text" id="h_vp" placeholder="h"></div>
+            </div>
+            <button onclick="calculateUkr()">Розрахувати Г укр</button>
+            <div id="resUkr" class="result-box">...</div>
+
+            <h3>4. Найменший приціл</h3>
+            <div class="row">
+                <div class="col"><label>h гр</label><input type="text" id="hgr_min" placeholder="h"></div>
+                <div class="col"><label>D (гребінь)</label><input type="text" id="d_min" placeholder="Метри"></div>
+                <div class="col"><label>α</label><input type="text" id="alpha_min" placeholder="Кут"></div>
+            </div>
+            <button onclick="calculateMinPr()">Розрахувати Пр мін</button>
+            <div id="resMin" class="result-box">...</div>
+
+            <h3>5. ΔV0 Сум</h3>
+            <label>ΔV0 сум ВІДОМОЇ:</label>
+            <input type="text" id="dv0_known" placeholder="-1,2" style="margin-bottom:10px;">
+            <div class="row">
+                <div class="col"><label>Дт ВІД</label><input type="text" id="dt_known" placeholder="Метри"></div>
+                <div class="col"><label>Дт НЕВ</label><input type="text" id="dt_unknown" placeholder="Метри"></div>
+            </div>
+            <label>ΔX Vo (табл):</label>
+            <input type="text" id="dx_vo" placeholder="0.5">
+            <button onclick="calculateDV0()">Розрахувати ΔV0</button>
+            <div id="resDV0" class="result-box">...</div>
+
+            <h3>6. Віяло</h3>
+            <div class="row">
+                <div class="col"><label>Дов осн</label><input type="text" id="on_main_fan" placeholder="26-00"></div>
+                <div class="col"><label>Пр осн</label><input type="text" id="pr_main_fan" placeholder="511"></div>
+            </div>
+            <div class="row">
+                <div class="col"><label>Дт (ціль)</label><input type="text" id="dt_fan" placeholder="Метри"></div>
+                <div class="col"><label>ΔX</label><input type="text" id="dx_val_fan" placeholder="5.6"></div>
+            </div>
+            <button onclick="calculateFan()">Розрахувати 1-шу</button>
+            <div id="resFan" class="result-box">...</div>
+        </div>
+    </details>
+
+<script>
+    // ==========================================
+    // SCRIPT 1: MAP LOGIC (CANVAS)
+    // ==========================================
+    function parse6000(s) {
+        try {
+            var str = (s || '').toString().trim();
+            var b = str.split('-');
+            if (b.length < 2) return parseFloat(str) || 0;
+            return parseFloat(b[0]) + parseFloat(b[1]) / 100;
+        } catch(e) { return 0; }
+    }
+    function degFrom6000(t) { return t * 6; }
+    function radFromDegTopZero(deg) { return (deg - 90) * Math.PI / 180; }
+
+    function calcMap() {
+        try {
+            var onStr = document.getElementById('inON').value;
+            var kStr = document.getElementById('inK').value;
+            var d = parseFloat(document.getElementById('inD').value) || 0;
+            var dxVal = parseFloat(document.getElementById('inDX').value) || 0;
+            var dTopVal = parseFloat(document.getElementById('inDtop').value) || 0;
+
+            var on = parse6000(onStr);
+            var k = parse6000(kStr);
+
+            var aON = (on * 6 - 90) * Math.PI / 180;
+            var aK = aON + (30 - k) * 6 * Math.PI / 180;
+            var a_G1_OG = (on * 6 + (30 - k) * 6);
+            var a_OG_G1 = (a_G1_OG + 180) % 360;
+            var rad = (a_OG_G1 - 90) * Math.PI / 180;
+            var dx = d * Math.cos(rad);
+            var dy = d * Math.sin(rad);
+            var aAB = aON + radFromDegTopZero(degFrom6000(30 - k) + 90);
+
+            // Dial Canvas
+            var cd = document.getElementById('canvDial');
+            var ctxd = cd.getContext('2d');
+            cd.width = 400; cd.height = 400;
+            ctxd.clearRect(0, 0, 400, 400);
+            for (var i = 0; i < 60; i++) {
+                var a = radFromDegTopZero(i * 6);
+                ctxd.beginPath();
+                ctxd.moveTo(200 + 165 * Math.cos(a), 200 + 165 * Math.sin(a));
+                ctxd.lineTo(200 + (i % 5 === 0 ? 145 : 155) * Math.cos(a), 200 + (i % 5 === 0 ? 145 : 155) * Math.sin(a));
+                ctxd.strokeStyle = '#333'; ctxd.stroke();
+                if (i % 5 === 0) {
+                    ctxd.fillStyle = '#000'; ctxd.font = 'bold 14px Arial';
+                    var num = i < 10 ? '0' + i : i;
+                    ctxd.fillText(num, 200 + 180 * Math.cos(a) - 10, 200 + 180 * Math.sin(a) + 5);
+                }
             }
-
-            let deltaDist = dt_new - dt_old;
-            let deltaP = deltaDist / dx;
-            let deltaD_mils = calcAngleDiff(a_new, a_old);
-
-            let res = `> РОЗРАХУНОК УСПІШНИЙ\n`;
-            res += `------------------------\n`;
-            res += `∆ D:   ${Math.round(deltaDist)} м\n`;
-            res += `∆ Пр:  ${deltaP > 0 ? '+' : ''}${deltaP.toFixed(1)} \n`;
-            res += `∆ Дов: ${formatDeltaArt(deltaD_mils)}\n`;
-            res += `------------------------\n`;
-            res += `НОВІ УСТАНОВКИ:\n\n`;
+            ctxd.lineWidth = 5; ctxd.strokeStyle = 'red'; ctxd.beginPath();
+            ctxd.moveTo(200, 200); ctxd.lineTo(200 + 140 * Math.cos(aON), 200 + 140 * Math.sin(aON)); ctxd.stroke();
             
-            let p1_new = p1_old + deltaP;
-            let d1_new_str = addAngles(d1_old, deltaD_mils);
-            res += `Г1 >> Пр: ${Math.round(p1_new)} | Дов: ${d1_new_str}\n`;
-            
-            let p2_new = p2_old + deltaP;
-            let d2_new_str = addAngles(d2_old, deltaD_mils);
-            res += `Г2 >> Пр: ${Math.round(p2_new)} | Дов: ${d2_new_str}`;
+            // Map Canvas
+            var cm = document.getElementById('canvMap');
+            var ctxm = cm.getContext('2d');
+            cm.width = 400; cm.height = 400;
+            ctxm.clearRect(0, 0, 400, 400);
+            ctxm.strokeStyle = '#ddd'; ctxm.lineWidth = 1; ctxm.beginPath();
+            for (var i = 0; i <= 400; i += 50) { ctxm.moveTo(i, 0); ctxm.lineTo(i, 400); ctxm.moveTo(0, i); ctxm.lineTo(400, i); }
+            ctxm.stroke();
 
-            let output = document.getElementById('resTransfer');
-            output.innerText = res;
-            output.style.color = "var(--neon-green)";
-        }
-    </script>
+            var Bx = 200, By = 200;
+            var scale = 0.7;
+            var Ax = Bx + dx * scale;
+            var Ay = By + dy * scale;
+
+            ctxm.lineWidth = 2; ctxm.strokeStyle = 'blue'; ctxm.setLineDash([10, 5]);
+            ctxm.beginPath(); ctxm.moveTo(Ax, Ay); ctxm.lineTo(Bx, By); ctxm.stroke(); ctxm.setLineDash([]);
+            
+            ctxm.fillStyle = 'red'; ctxm.beginPath(); ctxm.arc(Bx, By, 8, 0, 2 * Math.PI); ctxm.fill(); ctxm.fillText('ОГ', Bx + 14, By + 4);
+            ctxm.fillStyle = 'blue'; ctxm.beginPath(); ctxm.arc(Ax, Ay, 8, 0, 2 * Math.PI); ctxm.fill(); ctxm.fillText('Г1', Ax + 14, Ay + 4);
+
+            var diff = (a_OG_G1 - on * 6) * Math.PI / 180;
+            var ustup = d * Math.cos(diff);var inter = -1 * d * Math.sin(diff);
+            var dPric = (dxVal !== 0) ? ustup / dxVal : 0;
+            var dKut = (dTopVal !== 0) ? (inter * 955) / dTopVal : 0;
+
+            document.getElementById('resultMap').innerHTML =
+                "УСТУП: " + Math.round(ustup) + " м | ІНТЕРВАЛ: " + Math.round(inter) + " м<br>" +
+                "Δ Прицілу: <span style='color:#00ff00'>" + Math.round(dPric) + "</span> | Δ Кутоміру: <span style='color:#00ff00'>" + Math.round(dKut) + "</span>";
+        } catch (err) {}
+    }
+
+    // ==========================================
+    // SCRIPT 2: FIRE CORRECTION LOGIC
+    // ==========================================
+    let m1 = {p:0, dir:0};
+    let m2 = {p:0, dir:0};
+    let logCount = 0;
+    let initial_on = 0;
+
+    function parseArtCorr(val) {
+        if (!val) return 0;
+        return parseFloat(val.toString().replace(',', '.')) || 0;
+    }
+
+    function formatArtCorr(num) {
+        let n = Math.round(num * 100) / 100;
+        let sign = (n < 0) ? "-" : "+";
+        let abs = Math.abs(n);
+        let main = Math.floor(abs);
+        let dec = Math.round((abs - main) * 100);
+        return sign + main + "," + (dec < 10 ? "0" + dec : dec);
+    }
+
+    function calculateInitialCorr() {
+        let p2 = parseArtCorr(document.getElementById('p_base_corr').value);
+        let on = parseArtCorr(document.getElementById('on_base_corr').value);
+        let dov2 = parseArtCorr(document.getElementById('dov_base_corr').value);
+        let kt12 = parseArtCorr(document.getElementById('kt_1_2_corr').value);
+        let d = parseArtCorr(document.getElementById('d_dist_corr').value);
+        let dx = parseArtCorr(document.getElementById('dx_corr').value);
+        let dtop = parseArtCorr(document.getElementById('d_top_corr').value);
+        initial_on = on;
+
+        let rad = kt12 * 6 * (Math.PI / 180);
+        let ustup = d * Math.cos(rad); 
+        let interval = d * Math.sin(rad);
+
+        let p_corr = -(ustup / dx);
+        let v_fan = (interval * 955) / dtop / 100;
+
+        m2 = { p: p2, dir: on + dov2 };
+        m1 = { p: p2 + p_corr, dir: (on + dov2) + v_fan };
+
+        logCount = 1;
+        document.getElementById('logBody').innerHTML = "";
+        addLogRow(1);
+    }
+
+    function applyCorrection() {
+        if (logCount === 0) return;
+        let dv = parseArtCorr(document.getElementById('c_nedolit').value) - parseArtCorr(document.getElementById('c_perelit').value);
+        let sv = parseArtCorr(document.getElementById('c_zliva').value) - parseArtCorr(document.getElementById('c_sprava').value);
+        let dx = parseArtCorr(document.getElementById('dx_corr').value);
+        let dt = parseArtCorr(document.getElementById('d_top_corr').value);
+
+        m1.p += (dv / dx); 
+        m2.p += (dv / dx);
+        let dd = (sv * 955) / dt / 100;
+        m1.dir += dd; m2.dir += dd;
+
+        logCount++;
+        addLogRow(1);
+        ["c_perelit","c_nedolit","c_zliva","c_sprava"].forEach(id => document.getElementById(id).value = "");
+    }
+
+    function addLogRow(bk) {
+        let body = document.getElementById('logBody');
+        let r = body.insertRow(-1);
+        r.innerHTML = `<td>${logCount}</td>
+            <td>${m1.p.toFixed(1)}</td><td>${formatArtCorr(m1.dir - initial_on)}</td>
+            <td>${m2.p.toFixed(1)}</td><td>${formatArtCorr(m2.dir - initial_on)}</td>
+            <td style="color:#00ff00; font-weight:bold;">${bk}</td>`;
+    }
+
+    function calculateTransferCorr() {
+        if (logCount === 0) return;
+        let d_new = parseArtCorr(document.getElementById('trans_d_new').value);
+        let a_new = parseArtCorr(document.getElementById('trans_a_new').value);
+        let d_old = parseArtCorr(document.getElementById('d_top_corr').value);
+        let dx = parseArtCorr(document.getElementById('dx_corr').value);
+
+        let deltaP = (d_new - d_old) / dx;
+        let deltaD = a_new - m2.dir;
+
+        let res = `ПЕРЕНОС ВІД ЦІЛІ №${logCount}:\n`;
+        res += `М1: Пр ${(m1.p + deltaP).toFixed(1)} | Дов ${formatArtCorr((m1.dir + deltaD) - initial_on)}\n`;
+        res += `М2: Пр ${(m2.p + deltaP).toFixed(1)} | Дов ${formatArtCorr((m2.dir + deltaD) - initial_on)}\n`;
+        res += `--------------------------\n`;
+        res += `РОЗХІД: 4 ЗАЛПИ`;
+        document.getElementById('resTransferCorr').innerText = res;
+    }
+
+    // ==========================================
+    // SCRIPT 3: COORDINATES (Integer Logic)
+    // ==========================================
+    var og_E = 0, og_N = 0, og_H = 0, og_ON = 0;
+    var global_I = 0, global_U = 0;
+
+    function parseArtInt(val) {
+        if (!val) return 0;
+        return parseFloat(val.toString().replace(',', '.')) || 0;
+    }
+
+    function formatDovorotInt(val) {
+        var sign = val >= 0 ? "+" : "-";
+        var absVal = Math.round(Math.abs(val) * 100) / 100;
+        var cel = Math.floor(absVal);
+        var ost = Math.round((absVal - cel) * 100);
+        if (ost >= 100) { cel += 1; ost -= 100; }
+        return sign + cel.toString().padStart(2, '0') + "-" + ost.toString().padStart(2, '0');
+    }
+
+    function calculatePGZ() {
+        var e = parseArtInt(document.getElementById('e_kt').value);
+        var n = parseArtInt(document.getElementById('n_kt').value);
+        var h = parseArtInt(document.getElementById('h_kt').value);
+        og_ON = parseArtInt(document.getElementById('on_val_coord').value);
+        var d_kt = parseArtInt(document.getElementById('d_kt').value);
+        var dist = parseArtInt(document.getElementById('d_pgz').value);
+        var mc_raw = parseArtInt(document.getElementById('mc_val').value);
+        
+        var mc_val = (Math.abs(mc_raw) < 7 && mc_raw !== 0) ? mc_raw * 100 : mc_raw;
+        var alpha = og_ON - d_kt; 
+        if (og_ON < d_kt) alpha += 60;
+        var rad = (alpha * 6) * (Math.PI / 180);
+
+        og_E = e + dist * Math.sin(rad);
+        og_N = n + dist * Math.cos(rad);
+        og_H = h + (dist * mc_val) / 955;
+
+        document.getElementById('resPGZ').innerText = 
+            "E: " + Math.round(og_E) + "\nN: " + Math.round(og_N) + "\nh: " + Math.round(og_H);
+    }
+
+    function calculate1st() {
+        var dk = parseArtInt(document.getElementById('d_0_1_coord').value);
+        var beta = parseArtInt(document.getElementById('beta_1st').value);
+        var eps_raw = parseArtInt(document.getElementById('eps_1st').value);
+        
+        if (og_E === 0) { alert("Спочатку Блок 1!"); return; }
+
+        var dist_0_1 = (2 * 955) / (beta * 100);
+        var eps_val = (Math.abs(eps_raw) < 7 && eps_raw !== 0) ? eps_raw * 100 : eps_raw;
+
+        var alpha_0_1 = og_ON - (dk - 30);
+        while (alpha_0_1 >= 60) alpha_0_1 -= 60;
+        while (alpha_0_1 < 0) alpha_0_1 += 60;
+
+        var rad_0_1 = (alpha_0_1 * 6) * (Math.PI / 180);
+        var dev_rad = ((dk - 30) * 6) * (Math.PI / 180);
+        
+        global_I = (dist_0_1 * Math.sin(dev_rad));
+        global_U = -(dist_0_1 * Math.cos(dev_rad));
+
+        var e1 = og_E + dist_0_1 * Math.sin(rad_0_1);
+        var n1 = og_N + dist_0_1 * Math.cos(rad_0_1);
+        var h1 = og_H + (dist_0_1 * eps_val) / 955;
+
+        document.getElementById('res1st').innerText = 
+            "Dist: " + Math.round(dist_0_1) + " | I: " + Math.round(global_I) + " | У: " + Math.round(global_U) + "\n" +
+            "E1: " + Math.round(e1) + " N1: " + Math.round(n1) + " h1: " + Math.round(h1);
+    }
+
+    function calculateUkr() {
+        var dt = parseArtInt(document.getElementById('dt_ukr').value);
+        var d = parseArtInt(document.getElementById('d_ukr').value);
+        var hs = parseArtInt(document.getElementById('h_sp').value);
+        var hg = parseArtInt(document.getElementById('h_gr_ukr').value);
+        var hv = parseArtInt(document.getElementById('h_vp').value);
+        var res = (hg - hv) - (((hs - hv) - (hg - hv)) * d / (dt - d));
+        document.getElementById('resUkr').innerText = "Г укр: " + Math.round(res) + " м";
+    }
+
+    function calculateMinPr() {
+        var hg = parseArtInt(document.getElementById('hgr_min').value);
+        var d = parseArtInt(document.getElementById('d_min').value);
+        var a = parseArtInt(document.getElementById('alpha_min').value);
+        var bn = (hg * 955) / d;
+        document.getElementById('resMin').innerText = 
+            "Bn: " + Math.round(bn) + "\nПр мін: " + Math.round(bn + a);
+    }
+
+    function calculateDV0() {
+        var dv = parseArtInt(document.getElementById('dv0_known').value);
+        var dtk = parseArtInt(document.getElementById('dt_known').value);
+        var dtu = parseArtInt(document.getElementById('dt_unknown').value);
+        var dx = parseArtInt(document.getElementById('dx_vo').value);
+        var total = dv + ((dtu - dtk) / dx);
+        document.getElementById('resDV0').innerText = "ΔV0 СУМ: " + Math.round(total) + " %";
+    }
+
+    function calculateFan() {
+        var on_m = parseArtInt(document.getElementById('on_main_fan').value);
+        var pr_m = parseArtInt(document.getElementById('pr_main_fan').value);
+        var dt = parseArtInt(document.getElementById('dt_fan').value);
+        var dx = parseArtInt(document.getElementById('dx_val_fan').value);
+        if (global_I === 0 && global_U === 0) { alert("Немає даних інтервалу!"); return; }
+
+        var fan_raw = (global_I * 955) / dt;
+        var on1 = on_m + (fan_raw / 100);
+        var pr1 = pr_m + (global_U / dx);
+
+        document.getElementById('resFan').innerText = 
+            "Віяло: " + Math.round(fan_raw) + " под.\nОН 1-ї: " + formatDovorotInt(on1) + "\nПриціл 1-ї: " + Math.round(pr1);
+    }
+
+    function clearAll() {
+        if(confirm("Очистити всі поля?")) location.reload();
+    }
+
+    // Auto-init canvas
+    window.onload = function() { calcMap(); };
+</script>
 </body>
 </html>
